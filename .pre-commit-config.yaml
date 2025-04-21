@@ -1,0 +1,49 @@
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v2.3.0
+    hooks:
+    -   id: check-yaml
+    -   id: end-of-file-fixer
+    -   id: trailing-whitespace
+- repo: local
+  hooks:
+  - id: ruff
+    name: ruff
+    description: "Run 'ruff' for extremely fast Python linting"
+    entry: ruff check --force-exclude
+    language: python
+    types_or: [python, pyi, jupyter]
+    args: []
+    require_serial: true
+    additional_dependencies: []
+    minimum_pre_commit_version: "2.9.2"
+  - id: ruff-format
+    name: ruff-format
+    description: "Run 'ruff format' for extremely fast Python formatting"
+    entry: ruff format --force-exclude
+    language: python
+    types_or: [python, pyi, jupyter]
+    args: []
+    require_serial: true
+    additional_dependencies: []
+    minimum_pre_commit_version: "2.9.2"
+  - id: uv-lock
+    name: uv-lock
+    description: "Lock the dependencies"
+    entry: uv lock
+    language: python
+    types_or: [python, pyi, jupyter]
+    args: []
+    require_serial: true
+    additional_dependencies: []
+    minimum_pre_commit_version: "2.9.2"
+  - id: uv-export
+    name: uv-export
+    description: "Export the dependencies"
+    entry: uv export
+    language: python
+    types_or: [python, pyi, jupyter]
+    args: []
+    require_serial: true
+    additional_dependencies: []
+    minimum_pre_commit_version: "2.9.2"
