@@ -12,7 +12,7 @@ repos:
     description: "Run 'ruff' for extremely fast Python linting"
     entry: ruff check --force-exclude
     language: python
-    types_or: [python, pyi, jupyter]
+    types_or: [python, pyi]
     args: []
     require_serial: true
     additional_dependencies: []
@@ -22,7 +22,7 @@ repos:
     description: "Run 'ruff format' for extremely fast Python formatting"
     entry: ruff format --force-exclude
     language: python
-    types_or: [python, pyi, jupyter]
+    types_or: [python, pyi]
     args: []
     require_serial: true
     additional_dependencies: []
@@ -33,17 +33,9 @@ repos:
     entry: uv lock
     language: python
     types_or: [python, pyi, jupyter]
-    args: []
-    require_serial: true
-    additional_dependencies: []
-    minimum_pre_commit_version: "2.9.2"
   - id: uv-export
     name: uv-export
     description: "Export the dependencies"
     entry: uv export
     language: python
     types_or: [python, pyi, jupyter]
-    args: []
-    require_serial: true
-    additional_dependencies: []
-    minimum_pre_commit_version: "2.9.2"
