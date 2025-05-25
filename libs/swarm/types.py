@@ -1,21 +1,21 @@
 from typing import List, Callable, Union, Optional, TypedDict
 
-AgentFunction = Callable[[], Union[str, "Agent", dict]]
+AgentFunction = Callable[[], Union[str, "Agent", dict[str, str]]]
 
 
 class Agent(TypedDict):
-    name: str = "Agent"
-    model: str = "gpt-4o"
-    instructions: Union[str, Callable[[], str]] = "You are a helpful agent."
-    functions: List[AgentFunction] = []
-    tool_choice: str = None
-    parallel_tool_calls: bool = True
+    name: str
+    model: str
+    instructions: Union[str, Callable[[], str]]
+    functions: List[AgentFunction]
+    tool_choice: str
+    parallel_tool_calls: bool
 
 
 class Response(TypedDict):
-    messages: List = []
-    agent: Optional[Agent] = None
-    context_variables: dict = {}
+    messages: list[str]
+    agent: Optional[Agent]
+    context_variables: dict[str, str]
 
 
 class Result(TypedDict):
@@ -28,6 +28,6 @@ class Result(TypedDict):
         context_variables (dict): A dictionary of context variables.
     """
 
-    value: str = ""
-    agent: Optional[Agent] = None
-    context_variables: dict = {}
+    value: str
+    agent: Optional[Agent]
+    context_variables: dict[str, str]

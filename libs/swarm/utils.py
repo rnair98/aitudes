@@ -1,6 +1,8 @@
 import inspect
+from typing import Callable
 
-def function_to_json(func) -> dict:
+
+def function_to_json(func: Callable) -> dict:
     """
     Converts a Python function into a JSON-serializable dictionary
     that describes the function's signature, including its name,
@@ -58,6 +60,7 @@ def function_to_json(func) -> dict:
         },
     }
 
+
 def jinja2_formatter(template: str, /, **kwargs) -> str:
     """
     Formats a Jinja2 template string with the provided keyword arguments.
@@ -70,5 +73,6 @@ def jinja2_formatter(template: str, /, **kwargs) -> str:
         str: The formatted string.
     """
     from jinja2.sandbox import SandboxedEnvironment
+
     env = SandboxedEnvironment()
     return env.from_string(template).render(**kwargs)
