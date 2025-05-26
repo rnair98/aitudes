@@ -68,8 +68,8 @@ def jinja2_formatter(template: str, /, **kwargs: Any) -> str:
     """
     try:
         from jinja2.sandbox import SandboxedEnvironment  # type: ignore
-    except ImportError:
-        raise ImportError("jinja2 is required for template formatting")
+    except ImportError as err:
+        raise ImportError("jinja2 is required for template formatting") from err
 
     env = SandboxedEnvironment()  # type: ignore
     return env.from_string(template).render(**kwargs)  # type: ignore
