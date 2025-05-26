@@ -1,21 +1,37 @@
-import time,shutil,math,sys
-from typing import Iterable,Iterator,Generic,Optional,TypeVar
+import time
+import shutil
+import math
+import sys
+from typing import Iterable, Iterator, Generic, Optional, TypeVar, Any
 
-T = TypeVar('T')
+T = TypeVar("T")
+
 
 class tqdm(Generic[T]):
     def __init__(
-        self, 
-        iterable:Iterable[T]|None=None, 
-        desc:str='', 
-        disable:bool=False,
-        unit:str='it', 
-        unit_scale=False, 
-        total:Optional[int]=None, 
-        rate:int=100
+        self,
+        iterable: Iterable[T] | None = None,
+        desc: str = "",
+        disable: bool = False,
+        unit: str = "it",
+        unit_scale: bool = False,
+        total: Optional[int] = None,
+        rate: int = 100,
     ):
-        self.iterable, self.disable, self.unit, self.unit_scale, self.rate = iterable, disable, unit, unit_scale, rate
-        self.st, self.i, self.n, self.skip, self.t = time.perf_counter(), -1, 0, 1, getattr(iterable, "__len__", lambda:0)() if total is None else total
+        self.iterable, self.disable, self.unit, self.unit_scale, self.rate = (
+            iterable,
+            disable,
+            unit,
+            unit_scale,
+            rate,
+        )
+        self.st, self.i, self.n, self.skip, self.t = (
+            time.perf_counter(),
+            -1,
+            0,
+            1,
+            getattr(iterable, "__len__", lambda: 0)() if total is None else total,
+        )
         self.set_description(desc)
         self.update(0)
 
@@ -26,56 +42,88 @@ class tqdm(Generic[T]):
             self.update(1)
         self.update(close=True)
 
-    def __enter__(self): return self
-    def __exit__(self, *_): self.update(close=True)
-    def set_description(self, desc:str): self.desc = f"{desc}: " if desc else ""
+    def __enter__(self):
+        return self
 
-    def update(
-        self, 
-        n:int=0, 
-        close:bool=False
-    ):
-        self.n, self.i = self.n+n, self.i+1
+    def __exit__(self, *_):
+        self.update(close=True)
 
-        if self.disable or (not close and self.i % self.skip != 0): 
+    def set_description(self, desc: str):
+        self.desc = f"{desc}: " if desc else ""
+
+    def update(self, n: int = 0, close: bool = False):
+        self.n, self.i = self.n + n, self.i + 1
+
+        if self.disable or (not close and self.i % self.skip != 0):
             return
 
         prog, elapsed, ncols = (
-            self.n/self.t if self.t else 0, 
-            time.perf_counter()-self.st, 
-            shutil.get_terminal_size().columns
+            self.n / self.t if self.t else 0,
+            time.perf_counter() - self.st,
+            shutil.get_terminal_size().columns,
         )
 
-        if self.i/elapsed > self.rate and self.i: 
-            self.skip = max(int(self.i/elapsed)//self.rate,1)
+        if self.i / elapsed > self.rate and self.i:
+            self.skip = max(int(self.i / elapsed) // self.rate, 1)
 
-        def HMS(t): 
-            return ':'.join(f'{x:02d}' if i else str(x) for i,x in enumerate([int(t)//3600,int(t)%3600//60,int(t)%60]) if i or x)
+        def HMS(t: float) -> str:
+            return ":".join(
+                f"{x:02d}" if i else str(x)
+                for i, x in enumerate(
+                    [int(t) // 3600, int(t) % 3600 // 60, int(t) % 60]
+                )
+                if i or x
+            )
 
-        def SI(x): 
-            return (f"{x/1000**int(g:=math.log(x,1000)):.{int(3-3*math.fmod(g,1))}f}"[:4].rstrip('.')+' kMGTPEZY'[int(g)].strip()) if x else '0.00'
-            
-        prog_text = f'{SI(self.n)}{f"/{SI(self.t)}" if self.t else self.unit}' if self.unit_scale else f'{self.n}{f"/{self.t}" if self.t else self.unit}'
+        def SI(x: float) -> str:
+            return (
+                (
+                    f"{x / 1000 ** int(g := math.log(x, 1000)):.{int(3 - 3 * math.fmod(g, 1))}f}"[
+                        :4
+                    ].rstrip(".")
+                    + " kMGTPEZY"[int(g)].strip()
+                )
+                if x
+                else "0.00"
+            )
 
-        est_text = f'<{HMS(elapsed/prog-elapsed) if self.n else "?"}' if self.t else ''
+        prog_text = (
+            f"{SI(self.n)}{f'/{SI(self.t)}' if self.t else self.unit}"
+            if self.unit_scale
+            else f"{self.n}{f'/{self.t}' if self.t else self.unit}"
+        )
 
-        it_text = (SI(self.n/elapsed) if self.unit_scale else f"{self.n/elapsed:5.2f}") if self.n else "?"
+        est_text = (
+            f"<{HMS(elapsed / prog - elapsed) if self.n else '?'}" if self.t else ""
+        )
 
-        suf = f'{prog_text} [{HMS(elapsed)}{est_text}, {it_text}{self.unit}/s]'
-        sz = max(ncols-len(self.desc)-3-2-2-len(suf), 1)
+        it_text = (
+            (SI(self.n / elapsed) if self.unit_scale else f"{self.n / elapsed:5.2f}")
+            if self.n
+            else "?"
+        )
 
-        bar = '\r' + self.desc + (f'{100*prog:3.0f}%|{("█"*int(num:=sz*prog)+" ▏▎▍▌▋▊▉"[int(8*num)%8].strip()).ljust(sz," ")}| ' if self.t else '') + suf
+        suf = f"{prog_text} [{HMS(elapsed)}{est_text}, {it_text}{self.unit}/s]"
+        sz = max(ncols - len(self.desc) - 3 - 2 - 2 - len(suf), 1)
 
-        print(bar[:ncols+1], flush=True, end='\n'*close, file=sys.stderr)
+        bar = (
+            "\r"
+            + self.desc
+            + (
+                f"{100 * prog:3.0f}%|{('█' * int(num := sz * prog) + ' ▏▎▍▌▋▊▉'[int(8 * num) % 8].strip()).ljust(sz, ' ')}| "
+                if self.t
+                else ""
+            )
+            + suf
+        )
+
+        print(bar[: ncols + 1], flush=True, end="\n" * close, file=sys.stderr)
 
     @classmethod
-    def write(cls, s:str): 
+    def write(cls, s: str):
         print(f"\r\033[K{s}", flush=True, file=sys.stderr)
 
-class trange(tqdm):
-    def __init__(
-        self, 
-        n:int, 
-        **kwargs
-    ): 
+
+class trange(tqdm[int]):
+    def __init__(self, n: int, **kwargs: Any):
         super().__init__(iterable=range(n), total=n, **kwargs)

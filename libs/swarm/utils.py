@@ -1,8 +1,8 @@
 import inspect
-from typing import Callable
+from typing import Callable, Any
 
 
-def function_to_json(func: Callable) -> dict:
+def function_to_json(func: Callable[..., Any]) -> dict[str, Any]:
     """
     Converts a Python function into a JSON-serializable dictionary
     that describes the function's signature, including its name,
@@ -14,7 +14,7 @@ def function_to_json(func: Callable) -> dict:
     Returns:
         A dictionary representing the function's signature in JSON format.
     """
-    type_map = {
+    type_map: dict[type, str] = {
         str: "string",
         int: "integer",
         float: "number",
@@ -33,18 +33,13 @@ def function_to_json(func: Callable) -> dict:
 
     parameters = {}
     for param in signature.parameters.values():
-        try:
-            param_type = type_map.get(param.annotation, "string")
-        except KeyError as e:
-            raise KeyError(
-                f"Unknown type annotation {param.annotation} for parameter {param.name}: {str(e)}"
-            )
+        param_type = type_map.get(param.annotation, "string")
         parameters[param.name] = {"type": param_type}
 
     required = [
         param.name
         for param in signature.parameters.values()
-        if param.default == inspect._empty
+        if param.default == inspect.Parameter.empty
     ]
 
     return {
@@ -61,7 +56,7 @@ def function_to_json(func: Callable) -> dict:
     }
 
 
-def jinja2_formatter(template: str, /, **kwargs) -> str:
+def jinja2_formatter(template: str, /, **kwargs: Any) -> str:
     """
     Formats a Jinja2 template string with the provided keyword arguments.
 
@@ -72,7 +67,10 @@ def jinja2_formatter(template: str, /, **kwargs) -> str:
     Returns:
         str: The formatted string.
     """
-    from jinja2.sandbox import SandboxedEnvironment
+    try:
+        from jinja2.sandbox import SandboxedEnvironment  # type: ignore
+    except ImportError:
+        raise ImportError("jinja2 is required for template formatting")
 
-    env = SandboxedEnvironment()
-    return env.from_string(template).render(**kwargs)
+    env = SandboxedEnvironment()  # type: ignore
+    return env.from_string(template).render(**kwargs)  # type: ignore
