@@ -7,9 +7,9 @@ class Agent(TypedDict):
     name: str
     model: str
     instructions: Union[str, Callable[[], str]]
-    functions: List[AgentFunction]
-    tool_choice: str
-    parallel_tool_calls: bool
+    functions: Optional[List[AgentFunction]]
+    tool_choice: Optional[str]
+    parallel_tool_calls: Optional[bool]
 
 
 class Response(TypedDict):

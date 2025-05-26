@@ -9,7 +9,7 @@ UV_CONCURRENT_DOWNLOADS=4
 UV_CONCURRENT_INSTALLS=4
 UV_NO_CACHE=1
 UV_NO_INSTALLER_METADATA=1
-UV_PYTHON="$(HOME)/.pyenv/versions/3.12.3/bin/python"
+UV_PYTHON="$(which python)"
 UV_HTTP_TIMEOUT=60
 
 clean:
@@ -22,7 +22,7 @@ clean:
 	@find . -type d -name ".pytest_cache" -exec rm -rf {} +
 	@find . -type d -name ".ruff_cache" -exec rm -rf {} +
 	@find . -type d -name ".mypy_cache" -exec rm -rf {} +
-	@find . -type d -name ".DS_Store" -exec rm -rf {} +
+	@find . -type f -name ".DS_Store" -exec rm -f {} +
 
 add:
 ifdef PACKAGES

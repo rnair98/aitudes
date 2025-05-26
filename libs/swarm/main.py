@@ -40,7 +40,7 @@ reasoning_system_message = (
     "Always respond using the GitHub Flavored Markdown Spec with fenced code blocks."
 )
 
-default_system_message = (
+system_message = (
     "You are a senior software engineer & AI researcher who is capable of using a combination"
     " of techniques and tools to solve problems efficiently and effectively."
     " When given a specification & requirements, you are able to execute"
@@ -50,8 +50,6 @@ default_system_message = (
     "Always respond using the GitHub Flavored Markdown Spec with fenced code blocks."
 )
 
-test_system_message = "You are a helpful assistant. Be concise and direct."
-
 model_name = Prompt.ask("Enter model").strip()
 provider = Prompt.ask("Enter provider").strip()
 if provider == PROVIDER.OPENROUTER:
@@ -60,8 +58,6 @@ if provider == PROVIDER.OPENROUTER:
         raise ValueError(f"Model {model_name} not found")
     if model.types and "reasoning" in model.types:
         system_message = reasoning_system_message
-    else:
-        system_message = test_system_message
 
     client = OpenAI(
         api_key=model.provider.api_key,
@@ -78,7 +74,7 @@ while True:
         raise ValueError("User input cannot be empty")
 
     response: Response = client.responses.create(
-        model=model_name, instructions=default_system_message, input=user_input
+        model=model_name, instructions=system_message, input=user_input
     )
     logger.info(response)
 
