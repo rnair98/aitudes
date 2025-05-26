@@ -164,23 +164,29 @@ OR_MISTRAL = open_router(name="mistralai")
 
 
 OPENROUTER_MODELS = {
-    "gpt-4o": Model(
+    "gpt-4.1": Model(
         provider=OR_OAI,
         types=["chat"],
         inputs=["text", "image"],
         outputs=["text"],
     ),
-    "gpt-4o-mini": Model(
+    "gpt-4.1-nano": Model(
         provider=OR_OAI,
         types=["chat", "fast"],
         inputs=["text", "image"],
         outputs=["text"],
     ),
-    "o1": Model(
+    "gpt-4.1-mini": Model(
+        provider=OR_OAI,
+        types=["chat", "fast"],
+        inputs=["text", "image"],
+        outputs=["text"],
+    ),
+    "o3": Model(
         provider=OR_OAI,
         types=["reasoning"],
     ),
-    "o3-mini": Model(
+    "o4-mini": Model(
         provider=OR_OAI,
         types=["reasoning", "fast"],
     ),
