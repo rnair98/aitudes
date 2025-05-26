@@ -83,6 +83,9 @@ class Provider:
     quantizations: Optional[List[QUANTIZATIONS]] = None
 
     def __post_init__(self):
+        """
+        Sets the API key from the OPENAI_API_KEY environment variable if not provided during initialization.
+        """
         if self.api_key is None:
             self.api_key = os.getenv("OPENAI_API_KEY")
 
@@ -96,6 +99,9 @@ class Model:
     tags: Optional[List[OPENROUTER_TAGS]] = None
 
     def __post_init__(self):
+        """
+        Initializes the tags attribute as an empty list if it is not provided.
+        """
         if self.tags is None:
             self.tags = []
 
@@ -135,6 +141,12 @@ class BaseChatCompletions(BaseModel):
     @field_validator("reasoning_effort", mode="after")
     @classmethod
     def check_reasoning_effort(cls, v: str, info: ValidationInfo) -> str:
+        """
+        Validates that the reasoning_effort parameter is only set for supported models.
+        
+        Raises:
+            ValueError: If reasoning_effort is provided for a model not in REASONING_MODELS.
+        """
         if v and info.data["model"] not in REASONING_MODELS:
             raise ValueError(
                 f"Model {info.data['model']} does not support reasoning_effort"
