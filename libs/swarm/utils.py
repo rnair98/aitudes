@@ -4,15 +4,15 @@ from typing import Callable, Any
 
 def function_to_json(func: Callable[..., Any]) -> dict[str, Any]:
     """
-    Converts a Python function into a JSON-serializable dictionary
-    that describes the function's signature, including its name,
-    description, and parameters.
-
+    Converts a Python function's signature into a JSON-serializable dictionary.
+    
+    The returned dictionary includes the function's name, docstring, and a schema describing its parameters and which are required. Parameter types are mapped to JSON schema types where possible.
+    
     Args:
-        func: The function to be converted.
-
+        func: The Python function to describe.
+    
     Returns:
-        A dictionary representing the function's signature in JSON format.
+        A dictionary representing the function's signature and parameters in a JSON-compatible format.
     """
     type_map: dict[type, str] = {
         str: "string",
@@ -58,14 +58,13 @@ def function_to_json(func: Callable[..., Any]) -> dict[str, Any]:
 
 def jinja2_formatter(template: str, /, **kwargs: Any) -> str:
     """
-    Formats a Jinja2 template string with the provided keyword arguments.
-
-    Args:
-        template (str): The Jinja2 template string to format.
-        **kwargs: Keyword arguments to use for formatting the template.
-
+    Renders a Jinja2 template string using the provided keyword arguments.
+    
+    Raises:
+        ImportError: If the Jinja2 library is not installed.
+    
     Returns:
-        str: The formatted string.
+        The rendered template as a string.
     """
     try:
         from jinja2.sandbox import SandboxedEnvironment  # type: ignore
