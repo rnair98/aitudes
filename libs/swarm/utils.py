@@ -1,18 +1,20 @@
 import inspect
+from typing import Callable, Any
 
-def function_to_json(func) -> dict:
+
+def function_to_json(func: Callable[..., Any]) -> dict[str, Any]:
     """
-    Converts a Python function into a JSON-serializable dictionary
-    that describes the function's signature, including its name,
-    description, and parameters.
-
+    Converts a Python function's signature into a JSON-serializable dictionary.
+    
+    The returned dictionary includes the function's name, docstring, and a schema describing its parameters and which are required. Parameter types are mapped to JSON schema types where possible.
+    
     Args:
-        func: The function to be converted.
-
+        func: The Python function to describe.
+    
     Returns:
-        A dictionary representing the function's signature in JSON format.
+        A dictionary representing the function's signature and parameters in a JSON-compatible format.
     """
-    type_map = {
+    type_map: dict[type, str] = {
         str: "string",
         int: "integer",
         float: "number",
@@ -31,18 +33,13 @@ def function_to_json(func) -> dict:
 
     parameters = {}
     for param in signature.parameters.values():
-        try:
-            param_type = type_map.get(param.annotation, "string")
-        except KeyError as e:
-            raise KeyError(
-                f"Unknown type annotation {param.annotation} for parameter {param.name}: {str(e)}"
-            )
+        param_type = type_map.get(param.annotation, "string")
         parameters[param.name] = {"type": param_type}
 
     required = [
         param.name
         for param in signature.parameters.values()
-        if param.default == inspect._empty
+        if param.default == inspect.Parameter.empty
     ]
 
     return {
@@ -58,17 +55,21 @@ def function_to_json(func) -> dict:
         },
     }
 
-def jinja2_formatter(template: str, /, **kwargs) -> str:
+
+def jinja2_formatter(template: str, /, **kwargs: Any) -> str:
     """
-    Formats a Jinja2 template string with the provided keyword arguments.
-
-    Args:
-        template (str): The Jinja2 template string to format.
-        **kwargs: Keyword arguments to use for formatting the template.
-
+    Renders a Jinja2 template string using the provided keyword arguments.
+    
+    Raises:
+        ImportError: If the Jinja2 library is not installed.
+    
     Returns:
-        str: The formatted string.
+        The rendered template as a string.
     """
-    from jinja2.sandbox import SandboxedEnvironment
-    env = SandboxedEnvironment()
-    return env.from_string(template).render(**kwargs)
+    try:
+        from jinja2.sandbox import SandboxedEnvironment  # type: ignore
+    except ImportError as err:
+        raise ImportError("jinja2 is required for template formatting") from err
+
+    env = SandboxedEnvironment()  # type: ignore
+    return env.from_string(template).render(**kwargs)  # type: ignore
