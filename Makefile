@@ -1,4 +1,4 @@
-PHONY: clean
+.PHONY: clean add setup
 
 SHELL := /bin/bash
 
