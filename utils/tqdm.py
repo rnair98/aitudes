@@ -25,7 +25,7 @@ class tqdm(Generic[T]):
             unit_scale,
             rate,
         )
-        self.st, self.i, self.n, self.skip, self.t = (
+        self.start_time, self.current_index, self.count, self.skip, self.total = (
             time.perf_counter(),
             -1,
             0,
