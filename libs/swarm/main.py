@@ -11,6 +11,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+
 logger = loguru.logger
 logger.configure(
     handlers=[
