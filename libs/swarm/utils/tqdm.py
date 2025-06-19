@@ -20,7 +20,7 @@ class tqdm(Generic[T]):
     ):
         """
         Initializes a progress bar for an iterable, configuring display options and internal state.
-        
+
         Args:
             iterable: The iterable to track progress over. If None, progress bar operates without iteration.
             desc: Optional description prefix for the progress bar.
@@ -50,7 +50,7 @@ class tqdm(Generic[T]):
     def __iter__(self) -> Iterator[T]:
         """
         Iterates over the wrapped iterable, updating the progress bar after each item.
-        
+
         Yields each item from the iterable and updates the progress bar to reflect progress.
         Finalizes the progress bar display when iteration completes.
         """
@@ -63,7 +63,7 @@ class tqdm(Generic[T]):
     def __enter__(self):
         """
         Enables use of the progress bar as a context manager.
-        
+
         Returns:
             The progress bar instance itself.
         """
@@ -78,7 +78,7 @@ class tqdm(Generic[T]):
     def set_description(self, desc: str):
         """
         Sets the progress bar description prefix.
-        
+
         If a non-empty description is provided, appends ": " to it; otherwise, clears the prefix.
         """
         self.desc = f"{desc}: " if desc else ""
@@ -86,12 +86,12 @@ class tqdm(Generic[T]):
     def update(self, n: int = 0, close: bool = False):
         """
         Updates the progress bar display to reflect the current iteration state.
-        
+
         Increments the internal counters, recalculates progress, and prints an updated
         progress bar to standard error. Dynamically adjusts update frequency based on
         iteration rate to minimize overhead. When `close` is True, finalizes the display
         and moves to a new line.
-        
+
         Args:
             n: Number of iterations to increment the progress by.
             close: If True, finalizes and closes the progress bar display.
@@ -113,10 +113,10 @@ class tqdm(Generic[T]):
         def HMS(t: float) -> str:
             """
             Converts a time duration in seconds to a human-readable H:MM:SS or M:SS format.
-            
+
             Args:
                 t: Time duration in seconds.
-            
+
             Returns:
                 A string representing the duration in hours, minutes, and seconds, omitting leading zero hours if not needed.
             """
@@ -131,10 +131,10 @@ class tqdm(Generic[T]):
         def SI(x: float) -> str:
             """
             Converts a numeric value to a string with an appropriate SI prefix.
-            
+
             Args:
                 x: The numeric value to convert.
-            
+
             Returns:
                 A string representing the value scaled with an SI prefix (e.g., k, M, G).
             """
@@ -185,7 +185,7 @@ class tqdm(Generic[T]):
     def write(cls, s: str):
         """
         Clears the current line and writes a message to standard error.
-        
+
         Args:
             s: The string to display on the progress bar line.
         """
@@ -196,7 +196,7 @@ class trange(tqdm[int]):
     def __init__(self, n: int, **kwargs: Any):
         """
         Initializes a progress bar for iterating over a range of integers from 0 to n - 1.
-        
+
         Args:
             n: The number of iterations for the progress bar.
             **kwargs: Additional keyword arguments passed to the tqdm base class.
