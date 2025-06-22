@@ -763,27 +763,27 @@ The migration to a Bazel-based polyglot monorepo will provide:
 
 #### Before Starting Migration
 
-1. **Team Training**: Bazel and Nix fundamentals training for all developers
-2. **Tool Installation**: Nix package manager setup on all development machines
-3. **Environment Preparation**: Development environment standardization with direnv
+1. **Team Training**: Bazel and Nix Flakes fundamentals training for all developers
+2. **Tool Installation**: Nix package manager setup with flakes enabled on all development machines
+3. **Environment Preparation**: Development environment standardization with direnv + flakes
 4. **Backup Strategy**: Current system backup and rollback plan
 5. **Communication Plan**: Stakeholder communication strategy
 
-#### First Week Tasks (Nix Foundation)
+#### First Week Tasks (Nix Flakes Foundation)
 
-1. **Nix Installation**: Install Nix package manager on all systems
-2. **Shell Environment**: Create `shell.nix` and `.envrc` configuration
-3. **Bazel Setup**: Install and configure Bazel through Nix
-4. **Toolchain Setup**: Configure Python, Node.js, and Go toolchains via Nix
-5. **Team Validation**: Ensure all team members can activate the development environment
+1. **Nix Installation**: Install Nix package manager with flakes support on all systems
+2. **Flake Environment**: Create `flake.nix` with AI/ML development environment
+3. **Lock File Generation**: Generate `flake.lock` for reproducible dependency resolution
+4. **Direnv Integration**: Configure `direnv` with `use flake` for automatic activation
+5. **Team Validation**: Ensure all team members can activate development environments
 
 #### Second Week Tasks (Bazel Integration)
 
-1. **rules_nixpkgs**: Add Nix integration to Bazel WORKSPACE
-2. **Hermetic Builds**: Configure hermetic Python builds with Nix toolchains
-3. **Build Validation**: Ensure existing functionality works under Nix+Bazel
-4. **Documentation**: Document the new development workflow
-5. **CI/CD Pipeline**: Update continuous integration to use Nix environments
+1. **rules_nixpkgs**: Add Nix flake integration to Bazel WORKSPACE
+2. **Hermetic Builds**: Configure hermetic Python builds with flake-provided toolchains
+3. **Build Validation**: Ensure existing functionality works under Nix Flakes + Bazel
+4. **Specialized Shells**: Create GPU, CI, and documentation development environments
+5. **Documentation**: Document the new flake-based development workflow
 
 ### 10.3 Long-term Vision
 
