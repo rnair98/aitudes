@@ -1,0 +1,13 @@
+# BUILD.bazel for libs/swarm/utils
+load("@rules_python//python:defs.bzl", "py_library")
+
+package(default_visibility = ["//libs/swarm:__pkg__"])
+
+py_library(
+    name = "utils",
+    srcs = [
+        "__init__.py",
+        "tqdm.py",
+    ],
+    imports = ["."],
+)

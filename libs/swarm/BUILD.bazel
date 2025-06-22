@@ -1,0 +1,85 @@
+# BUILD.bazel for libs/swarm - Python AI agent library
+load("@rules_python//python:defs.bzl", "py_library", "py_binary", "py_test")
+
+package(default_visibility = ["//visibility:public"])
+
+# Core swarm library
+py_library(
+    name = "swarm",
+    srcs = [
+        "__init__.py",
+        "main.py",
+        "models.py",
+        "types.py",
+        "utils.py",
+    ],
+    deps = [
+        "//libs/swarm/utils:utils",
+    ],
+    imports = ["."],
+    data = [],
+)
+
+# Swarm CLI binary
+py_binary(
+    name = "swarm_cli",
+    srcs = ["main.py"],
+    main = "main.py",
+    deps = [":swarm"],
+    imports = ["."],
+)
+
+# Unit tests for the swarm library
+py_test(
+    name = "test",
+    srcs = glob(["test_*.py", "*_test.py"]),
+    deps = [
+        ":swarm",
+        "@rules_python//python/runfiles",
+    ],
+    imports = ["."],
+    size = "small",
+    timeout = "moderate",
+)
+
+# Test dependencies (create if they don't exist)
+py_test(
+    name = "models_test",
+    srcs = ["test_models.py"] if glob(["test_models.py"]) else ["dummy_test.py"],
+    deps = [":swarm"],
+    imports = ["."],
+    size = "small",
+)
+
+py_test(
+    name = "types_test",
+    srcs = ["test_types.py"] if glob(["test_types.py"]) else ["dummy_test.py"],
+    deps = [":swarm"],
+    imports = ["."],
+    size = "small",
+)
+
+py_test(
+    name = "utils_test",
+    srcs = ["test_utils.py"] if glob(["test_utils.py"]) else ["dummy_test.py"],
+    deps = [":swarm"],
+    imports = ["."],
+    size = "small",
+)
+
+# Lint and format targets
+load("@bazel_skylib//rules:build_test.bzl", "build_test")
+
+build_test(
+    name = "swarm_build_test",
+    targets = [":swarm"],
+)
+
+# Export for other packages to depend on
+exports_files([
+    "__init__.py",
+    "main.py",
+    "models.py",
+    "types.py",
+    "utils.py",
+])

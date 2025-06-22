@@ -1,0 +1,54 @@
+# Root BUILD.bazel file for aitudes monorepo
+# This file defines the project structure and global configuration
+
+package(default_visibility = ["//visibility:public"])
+
+# Define the project structure with proper package groups
+exports_files([
+    "pyproject.toml",
+    "requirements.txt",
+    "uv.lock",
+    "flake.nix",
+    "flake.lock",
+])
+
+# File groups for common configurations
+filegroup(
+    name = "python_config",
+    srcs = [
+        "pyproject.toml",
+        "requirements.txt",
+        "uv.lock",
+    ],
+)
+
+filegroup(
+    name = "nix_config",
+    srcs = [
+        "flake.nix",
+        "flake.lock",
+    ],
+)
+
+# Alias for building all libraries
+alias(
+    name = "libs",
+    actual = "//libs:all",
+)
+
+# Alias for running all tests
+alias(
+    name = "test_all",
+    actual = "//libs:test_all",
+)
+
+# Development tools and linting
+load("@bazel_skylib//rules:build_test.bzl", "build_test")
+
+build_test(
+    name = "config_files_test",
+    targets = [
+        ":python_config",
+        ":nix_config",
+    ],
+)
