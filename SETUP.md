@@ -88,7 +88,7 @@ aitudes/                     # Monorepo root
    # Check Bazel (when available)
    bazel version
    bazel build //libs/swarm:swarm
-   bazel test //libs/swarm:test
+   bazel test //libs/swarm:dummy_test
    ```
 
 3. **Development workflow:**
