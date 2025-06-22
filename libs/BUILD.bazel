@@ -1,0 +1,20 @@
+# BUILD.bazel for libs directory
+# Aggregates all libraries in the monorepo
+
+package(default_visibility = ["//visibility:public"])
+
+# Aggregate all libraries
+alias(
+    name = "all",
+    actual = "//libs/swarm:swarm",
+)
+
+# Aggregate all tests
+filegroup(
+    name = "test_all",
+    srcs = [
+        "//libs/swarm:test_utils",
+        "//libs/swarm:test_types",
+        "//libs/swarm:dummy_test",
+    ],
+)

@@ -1,0 +1,53 @@
+# BUILD.bazel for libs/swarm - Python AI agent library
+
+load("@rules_python//python:defs.bzl", "py_library", "py_binary", "py_test")
+
+package(default_visibility = ["//visibility:public"])
+
+# Core swarm library
+py_library(
+    name = "swarm",
+    srcs = [
+        "__init__.py",
+        "main.py",
+        "models.py",
+        "types.py",
+        "utils.py",
+    ],
+    imports = ["."],
+)
+
+# Main executable
+py_binary(
+    name = "main",
+    srcs = ["main.py"],
+    main = "main.py",
+    deps = [":swarm"],
+    imports = ["."],
+)
+
+# Build verification test
+py_test(
+    name = "dummy_test",
+    srcs = ["dummy_test.py"],
+    deps = [":swarm"],
+    imports = ["."],
+    size = "small",
+)
+
+# Unit tests
+py_test(
+    name = "test_utils",
+    srcs = ["test_utils.py"],
+    deps = [":swarm"],
+    imports = ["."],
+    size = "small",
+)
+
+py_test(
+    name = "test_types",
+    srcs = ["test_types.py"],
+    deps = [":swarm"],
+    imports = ["."],
+    size = "small",
+)

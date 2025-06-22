@@ -1,0 +1,46 @@
+# Bazel configuration for aitudes monorepo
+
+# Import user-specific configuration if it exists
+try-import %workspace%/user.bazelrc
+
+# Build configuration
+build --incompatible_strict_action_env
+build --sandbox_default_allow_network=false
+build --worker_sandboxing
+
+# Enable legacy WORKSPACE mode for now
+common --enable_bzlmod=false
+common --enable_workspace=true
+
+# Python configuration - using modern toolchains
+# build --python_top=@python3_11//:python
+
+# Test configuration
+test --test_output=errors
+test --test_summary=detailed
+test --test_verbose_timeout_warnings
+
+# Coverage configuration
+coverage --combined_report=lcov
+coverage --coverage_report_generator=@bazel_tools//tools/test:coverage_report_generator
+
+# Performance optimizations
+build --local_resources=memory=0.75
+build --local_resources=cpu=0.75
+
+# Convenience aliases
+build:fast --compilation_mode=opt
+build:debug --compilation_mode=dbg --strip=never
+
+# CI configuration
+build:ci --loading_phase_threads=1
+build:ci --jobs=2
+build:ci --verbose_failures
+build:ci --test_timeout=300
+
+# Development configuration
+build:dev --compilation_mode=fastbuild
+build:dev --show_result=10
+
+# Default to development configuration
+build --config=dev
