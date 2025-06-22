@@ -33,11 +33,11 @@
           # Note: mcp package might need manual installation via pip in shell
 
           # Development and testing tools
-          python311Packages.pytest
-          python311Packages.black
+          pkgs.python311Packages.pytest
+          pkgs.python311Packages.black
           ruff
-          python311Packages.mypy
-          python311Packages.ipykernel
+          pkgs.python311Packages.mypy
+          pkgs.python311Packages.ipykernel
 
           # Additional packages from your current setup
           requests
@@ -74,7 +74,7 @@
               aiPythonEnv
               pkgs.nodejs_20
               pkgs.nodePackages.pnpm
-              pkgs.go_1_21
+              pkgs.go_1_22
             ];
 
             shellHook = ''

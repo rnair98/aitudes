@@ -6,13 +6,14 @@ try-import %workspace%/user.bazelrc
 # Build configuration
 build --incompatible_strict_action_env
 build --sandbox_default_allow_network=false
-build --experimental_worker_sandboxing
+build --worker_sandboxing
 
-# Enable Bzlmod (modern dependency management)
+# Enable legacy WORKSPACE mode for now
 common --enable_bzlmod=false
+common --enable_workspace=true
 
-# Python configuration
-build --python_top=@python3_11//:python
+# Python configuration - using modern toolchains
+# build --python_top=@python3_11//:python
 
 # Test configuration
 test --test_output=errors
@@ -24,8 +25,8 @@ coverage --combined_report=lcov
 coverage --coverage_report_generator=@bazel_tools//tools/test:coverage_report_generator
 
 # Performance optimizations
-build --local_ram_resources=HOST_RAM*0.75
-build --local_cpu_resources=HOST_CPUS*0.75
+build --local_resources=memory=0.75
+build --local_resources=cpu=0.75
 
 # Convenience aliases
 build:fast --compilation_mode=opt

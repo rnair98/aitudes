@@ -2,15 +2,20 @@ import inspect
 from typing import Callable, Any
 
 
+def dummy_function() -> bool:
+    """A dummy function for testing purposes."""
+    return True
+
+
 def function_to_json(func: Callable[..., Any]) -> dict[str, Any]:
     """
     Converts a Python function's signature into a JSON-serializable dictionary.
-    
+
     The returned dictionary includes the function's name, docstring, and a schema describing its parameters and which are required. Parameter types are mapped to JSON schema types where possible.
-    
+
     Args:
         func: The Python function to describe.
-    
+
     Returns:
         A dictionary representing the function's signature and parameters in a JSON-compatible format.
     """
@@ -59,10 +64,10 @@ def function_to_json(func: Callable[..., Any]) -> dict[str, Any]:
 def jinja2_formatter(template: str, /, **kwargs: Any) -> str:
     """
     Renders a Jinja2 template string using the provided keyword arguments.
-    
+
     Raises:
         ImportError: If the Jinja2 library is not installed.
-    
+
     Returns:
         The rendered template as a string.
     """

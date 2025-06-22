@@ -9,12 +9,54 @@ wheels/
 # Virtual environments
 .venv
 
-# Experiment files
-*.ipynb
-*.ipynb_checkpoints
+# Bazel build artifacts
+bazel-*
+.bazel*
 
-# Environment variables
+# Nix development artifacts
+.direnv/
+result
+result-*
+
+# Development environment files
+.envrc
 .env
 
-# Zed-specific files
+# IDE and editor files
+.cursor/
 .zed/
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Cache directories
+.ruff_cache/
+.mypy_cache/
+.pytest_cache/
+node_modules/
+
+# Temporary and backup files
+*.tmp
+*.bak
+*.orig
+*~
+.DS_Store
+Thumbs.db
+
+# Experiment files
+*.ipynb_checkpoints
+.ipynb_checkpoints/
+
+# Build and distribution
+*.egg-info/
+dist/
+build/
+wheels/
+
+# Testing artifacts
+.coverage
+htmlcov/
+.tox/
+.pytest_cache/
