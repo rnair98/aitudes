@@ -15,6 +15,6 @@ filegroup(
     srcs = [
         "//libs/swarm:test_utils",
         "//libs/swarm:test_types",
-        "dummy_test",
+        "//libs/swarm:dummy_test",
     ],
 )
