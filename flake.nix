@@ -33,13 +33,11 @@
           # Note: mcp package might need manual installation via pip in shell
 
           # Development and testing tools
-          pytest
-          black
+          python311Packages.pytest
+          python311Packages.black
           ruff
-          mypy
-          ipykernel
-          nbstripout
-          pre-commit
+          python311Packages.mypy
+          python311Packages.ipykernel
 
           # Additional packages from your current setup
           requests
