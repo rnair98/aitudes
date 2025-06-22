@@ -150,7 +150,7 @@ except: print('  - OpenAI: not available')
           python = aiPythonEnv;
           bazel = pkgs.bazel_7;
           nodejs = pkgs.nodejs_20;
-          go = pkgs.go_1_21;
+          go = pkgs.go_1_22;
         };
 
         # Apps for direct execution
