@@ -100,7 +100,7 @@ aitudes/                     # Monorepo root
    bazel test //libs:test_all
 
    # Run swarm CLI
-   bazel run //libs/swarm:swarm_cli
+   bazel run //libs/swarm:main
    ```
 
 ## 🔄 Daily Development Workflow
