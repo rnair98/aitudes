@@ -10,7 +10,11 @@ alias(
 )
 
 # Aggregate all tests
-alias(
+filegroup(
     name = "test_all",
-    actual = "//libs/swarm:test",
+    srcs = [
+        "//libs/swarm:test_utils",
+        "//libs/swarm:test_types",
+        "dummy_test",
+    ],
 )
